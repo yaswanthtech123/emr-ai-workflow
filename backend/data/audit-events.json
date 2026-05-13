@@ -1,1 +1,65 @@
-[]
+[
+  {
+    "id": "2132a558-68d8-418f-ba54-9aa953a44049",
+    "eventType": "AI_NOTE_GENERATED",
+    "patientId": "syn-pt-002",
+    "visitId": "visit-1778663768274",
+    "userRole": "doctor",
+    "timestamp": "2026-05-13T09:16:32.546Z",
+    "description": "Generated draft SOAP note from synthetic transcript."
+  },
+  {
+    "id": "1cbd8fd7-e960-4fb9-9e9d-50c01211a893",
+    "eventType": "AI_NOTE_GENERATED",
+    "patientId": "syn-pt-001",
+    "visitId": "visit-1778663604993",
+    "userRole": "doctor",
+    "timestamp": "2026-05-13T09:13:50.545Z",
+    "description": "Generated draft SOAP note from synthetic transcript."
+  },
+  {
+    "id": "1ddb0558-cb0b-4fd1-860f-b0b5934dee2f",
+    "eventType": "AI_NOTE_GENERATED",
+    "patientId": "syn-pt-001",
+    "visitId": "visit-1778663174062",
+    "userRole": "doctor",
+    "timestamp": "2026-05-13T09:07:16.762Z",
+    "description": "Generated draft SOAP note from synthetic transcript."
+  },
+  {
+    "id": "e7e8579c-1613-4fcf-ba94-d44fea5350cc",
+    "eventType": "AI_NOTE_GENERATED",
+    "patientId": "syn-pt-001",
+    "visitId": "visit-1778662098153",
+    "userRole": "doctor",
+    "timestamp": "2026-05-13T08:53:34.310Z",
+    "description": "Generated draft SOAP note from synthetic transcript."
+  },
+  {
+    "id": "93f665fd-e460-475b-b62e-11d559214047",
+    "eventType": "FINAL_NOTE_SAVED",
+    "patientId": "syn-pt-002",
+    "visitId": "visit-1778662009868",
+    "userRole": "doctor",
+    "timestamp": "2026-05-13T08:47:26.623Z",
+    "description": "Saved clinician-reviewed final SOAP note."
+  },
+  {
+    "id": "fcbe1675-2845-4686-8964-56edfc031ae6",
+    "eventType": "AI_NOTE_GENERATED",
+    "patientId": "syn-pt-002",
+    "visitId": "visit-1778662009868",
+    "userRole": "doctor",
+    "timestamp": "2026-05-13T08:47:22.278Z",
+    "description": "Generated draft SOAP note from synthetic transcript."
+  },
+  {
+    "id": "419eff54-bb2e-4038-99bf-829bde2c2faa",
+    "eventType": "AI_NOTE_GENERATED",
+    "patientId": "patient-001",
+    "visitId": "visit-1778658109382",
+    "userRole": "doctor",
+    "timestamp": "2026-05-13T07:42:04.838Z",
+    "description": "Generated draft SOAP note from synthetic transcript."
+  }
+]

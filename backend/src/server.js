@@ -3,12 +3,37 @@ import express from 'express';
 import cors from 'cors';
 import { z } from 'zod';
 import { config } from './config.js';
-import { syntheticPatient } from './patient.js';
+import { getPatientById, listPatients, patientContextLine } from './patientsRepo.js';
 import { attachRole, requireDoctorRole } from './middleware.js';
 import { addAuditEvent, getAuditEvents, getNotes, saveNote } from './dataStore.js';
-import { generateSoapNote } from './aiService.js';
+import { generateSoapNote, AiProviderError } from './aiService.js';
+
+process.on('unhandledRejection', (reason) => {
+  console.error('[unhandledRejection]', reason);
+});
+
+process.on('uncaughtException', (err) => {
+  console.error('[uncaughtException]', err);
+  process.exit(1);
+});
 
 const app = express();
+
+function shouldLogHttp() {
+  if (process.env.LOG_HTTP === '0') return false;
+  if (process.env.LOG_HTTP === '1') return true;
+  return process.env.NODE_ENV !== 'production';
+}
+
+if (shouldLogHttp()) {
+  app.use((req, res, next) => {
+    const start = Date.now();
+    res.on('finish', () => {
+      console.log(`[http] ${req.method} ${req.originalUrl} ${res.statusCode} ${Date.now() - start}ms`);
+    });
+    next();
+  });
+}
 
 app.use(cors());
 app.use(express.json({ limit: '1mb' }));
@@ -35,19 +60,37 @@ app.get('/health', (_req, res) => {
   res.json({ status: 'ok' });
 });
 
+/** @deprecated Use GET /api/patients and pick a patient; returns first synthetic patient for compatibility. */
 app.get('/api/patient', (_req, res) => {
-  res.json({ patient: syntheticPatient });
+  const all = listPatients();
+  const patient = all[0];
+  if (!patient) {
+    return res.status(500).json({ error: 'No synthetic patients configured.' });
+  }
+  return res.json({ patient });
+});
+
+app.get('/api/patients', (_req, res) => {
+  res.json({ patients: listPatients() });
+});
+
+app.get('/api/patients/:id', (req, res) => {
+  const patient = getPatientById(req.params.id);
+  if (!patient) {
+    return res.status(404).json({ error: 'Patient not found.' });
+  }
+  return res.json({ patient });
 });
 
 app.post('/api/ai/generate-soap', requireDoctorRole, async (req, res, next) => {
   try {
     const payload = transcriptSchema.parse(req.body);
-
-    if (payload.patientId !== syntheticPatient.id) {
+    const patient = getPatientById(payload.patientId);
+    if (!patient) {
       return res.status(404).json({ error: 'Patient not found.' });
     }
 
-    const patientContext = `${syntheticPatient.name}, age ${syntheticPatient.age}, ${syntheticPatient.clinicalDetail}`;
+    const patientContext = patientContextLine(patient);
     const generatedNote = await generateSoapNote({
       transcript: payload.transcript,
       patientContext,
@@ -73,8 +116,8 @@ app.post('/api/ai/generate-soap', requireDoctorRole, async (req, res, next) => {
 app.post('/api/notes', requireDoctorRole, async (req, res, next) => {
   try {
     const payload = noteSchema.parse(req.body);
-
-    if (payload.patientId !== syntheticPatient.id) {
+    const patient = getPatientById(payload.patientId);
+    if (!patient) {
       return res.status(404).json({ error: 'Patient not found.' });
     }
 
@@ -111,6 +154,10 @@ app.get('/api/notes', async (req, res, next) => {
       return res.status(400).json({ error: 'patientId query parameter is required.' });
     }
 
+    if (!getPatientById(patientId)) {
+      return res.status(404).json({ error: 'Patient not found.' });
+    }
+
     const notes = await getNotes(patientId);
     return res.json({ notes });
   } catch (error) {
@@ -125,6 +172,10 @@ app.get('/api/audit-events', async (req, res, next) => {
       return res.status(400).json({ error: 'patientId query parameter is required.' });
     }
 
+    if (!getPatientById(patientId)) {
+      return res.status(404).json({ error: 'Patient not found.' });
+    }
+
     const events = await getAuditEvents(patientId);
     return res.json({ events });
   } catch (error) {
@@ -137,6 +188,13 @@ app.use((err, _req, res, _next) => {
     return res.status(400).json({
       error: 'ValidationError',
       details: err.issues.map((issue) => ({ path: issue.path.join('.'), message: issue.message })),
+    });
+  }
+
+  if (err instanceof AiProviderError) {
+    return res.status(err.statusCode).json({
+      error: err.error,
+      message: err.message,
     });
   }
 

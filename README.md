@@ -4,7 +4,7 @@ A focused technical assignment prototype for an EMR-style healthcare workflow us
 
 ## Completed Scope
 
-- Open one predefined synthetic patient and display minimal context.
+- Open synthetic patients from JSON, select one, and display minimal context.
 - Paste a synthetic consultation transcript.
 - Generate SOAP draft (`Subjective`, `Objective`, `Assessment`, `Plan`) via **real AI API call through backend**.
 - Edit SOAP fields in frontend before save.
@@ -15,7 +15,7 @@ A focused technical assignment prototype for an EMR-style healthcare workflow us
 ## Project Structure
 
 - `frontend/` - React + Vite UI
-- `backend/` - Express API + OpenAI integration + JSON persistence
+- `backend/` - Express API + Gemini integration + JSON persistence (`data/patients.json`, `data/notes.json`, `data/audit-events.json`). Each patient may include optional **`defaultTranscript`** (≥20 chars); the UI pre-fills the transcript when that patient is selected so **Generate** is ready with role `doctor`.
 - `.env.example` - required environment variables
 
 ## Local Setup
@@ -25,7 +25,10 @@ A focused technical assignment prototype for an EMR-style healthcare workflow us
 ```bash
 cd backend && npm install
 cd ../frontend && npm install
+cd .. && npm install
 ```
+
+The root `npm install` is optional; it only adds tooling so you can start **backend and frontend together** with `npm run dev` from the repository root.
 
 ### 2) Configure environment
 
@@ -34,40 +37,79 @@ Copy `.env.example` values into your local env files.
 Backend expects:
 
 - `PORT`
-- `OPENAI_API_KEY`
-- `OPENAI_MODEL`
+- `GEMINI_API_KEY`
+- `GEMINI_MODEL` — must be a model ID your API key supports for `generateContent` (default in code: `gemini-2.0-flash`). If you see **model not found**, try `gemini-2.5-flash-preview` or check the [models list](https://ai.google.dev/api/models).
 
 Frontend expects:
 
 - `VITE_API_BASE_URL`
 
-### 3) Run backend
+### 3) Run the app
+
+**Important:** `npm run dev` in `backend/` only starts the API. **Live reload and the UI come from Vite**, which starts only when you run `npm run dev` in `frontend/` (or use the combined command below). Open the URL Vite prints (usually `http://localhost:5173`), not a built `index.html` file.
+
+**Option A — one command (backend + frontend)**
+
+From the repository root (after `npm install` at root):
+
+```bash
+npm run dev
+```
+
+Use the local URL shown for **frontend** (Vite). Keep that process running while you edit React files; changes hot-reload.
+
+**Option B — two terminals**
+
+Backend:
 
 ```bash
 cd backend
-OPENAI_API_KEY=your_key_here npm run dev
+npm run dev
 ```
 
-### 4) Run frontend
+Frontend (separate terminal):
 
 ```bash
 cd frontend
-VITE_API_BASE_URL=http://localhost:4000/api npm run dev
+npm run dev
 ```
 
-### 5) Demo role behavior
+#### Backend logs
+
+- **Foreground terminal:** All `console.log` / `console.error` output from the backend appears in the terminal where you started it (`cd backend && npm run dev`). If that terminal returns to a shell prompt, the process has exited and there will be no more logs until you start it again.
+- **Root `npm run dev`:** `concurrently` prefixes lines with `[backend]` or `[frontend]` so you can tell which service logged what.
+- **HTTP request lines:** When not in production, the server logs each request as `[http] METHOD path status durationms`. Set `LOG_HTTP=0` in `backend/.env` to turn that off, or `LOG_HTTP=1` to force it on.
+- **Save to a file:** `cd backend && npm run dev 2>&1 | tee backend-dev.log`
+- **Unhandled errors:** `unhandledRejection` and `uncaughtException` are printed to stderr (and uncaught exceptions exit the process).
+
+### 4) Demo role behavior
 
 Use role selector in UI:
 
 - `doctor` can generate and save notes.
 - non-doctor (`frontdesk`, `auditor`) receives backend `403` on generate/save.
 
+## Gemini quota / “limit: 0” errors
+
+If the API returns **`QuotaExceeded`** (HTTP **429**) or a message like **`free_tier_requests … limit: 0`**, that comes from **Google’s account and billing limits**, not from this app’s code.
+
+Typical fixes:
+
+1. Open [Google AI Studio](https://aistudio.google.com/) → your API key / project → **enable billing** or adjust the plan so `generateContent` has non-zero quota for the model you use (`GEMINI_MODEL`).
+2. Confirm the **Generative Language API** is enabled for that Google Cloud project and the key is from the same project.
+3. Wait for the **retry** window if you only hit short-term rate limits (the provider message often includes “Please retry in …s”).
+4. Try another model your tier supports (update `GEMINI_MODEL` in `backend/.env`).
+
+See also: [Gemini API rate limits](https://ai.google.dev/gemini-api/docs/rate-limits).
+
 ## Backend/API Overview
 
 ### Routes
 
-- `GET /api/patient` - returns predefined synthetic patient.
-- `POST /api/ai/generate-soap` - validates payload, checks doctor role, calls OpenAI, returns SOAP draft, logs audit event.
+- `GET /api/patients` - returns all synthetic patients from `backend/data/patients.json`.
+- `GET /api/patients/:id` - returns one patient or `404`.
+- `GET /api/patient` - **deprecated**; returns first patient for backward compatibility.
+- `POST /api/ai/generate-soap` - validates payload, checks doctor role, calls Gemini, returns SOAP draft, logs audit event.
 - `POST /api/notes` - validates payload, checks doctor role, saves note, logs audit event.
 - `GET /api/notes?patientId=...` - returns saved notes.
 - `GET /api/audit-events?patientId=...` - returns audit events.
@@ -92,7 +134,7 @@ Use role selector in UI:
 3. **Data storage:** JSON-file persistence chosen over in-memory only, so data survives backend restart without database setup overhead.
 4. **API design:** Small REST surface focused on assignment flow (patient, generate, save, history, audit) with explicit request/response shapes.
 5. **State management:** React local state is sufficient; introducing Redux/Zustand would add complexity without benefit at this scale.
-6. **AI provider/model:** OpenAI Chat Completions API with `response_format: json_object` to constrain SOAP output structure.
+6. **AI provider/model:** Gemini `generateContent` API with JSON response MIME type to constrain SOAP output structure.
 7. **Secrets handling:** API key is backend-only via env vars; no key exposure to frontend bundle.
 8. **Role checks:** Backend middleware enforces `x-user-role` gate on clinical actions; frontend selector is demo-only and not trusted for authorization.
 9. **Audit logging approach:** Each key action appends structured event with type, patient/visit IDs, role, timestamp, description.

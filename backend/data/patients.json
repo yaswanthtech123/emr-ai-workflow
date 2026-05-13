@@ -1,0 +1,47 @@
+[
+  {
+    "id": "syn-pt-001",
+    "name": "Ava Thompson",
+    "age": 52,
+    "sex": "F",
+    "mrn": "SYN-MRN-1001",
+    "clinicalDetail": "Penicillin allergy (rash); avoid PCN and related beta-lactams.",
+    "defaultTranscript": "Doctor: Any medication allergies we should record?\nPatient: Yes—penicillin gives me a rash, so I avoid it.\nDoctor: Noted. What brings you in today?\nPatient: Sore throat for two days, no fever.\nDoctor: Exam shows mild pharyngeal erythema. We'll treat symptomatically and avoid beta-lactams given your allergy (synthetic visit)."
+  },
+  {
+    "id": "syn-pt-002",
+    "name": "Marcus Chen",
+    "age": 67,
+    "sex": "M",
+    "mrn": "SYN-MRN-1002",
+    "clinicalDetail": "Type 2 diabetes mellitus; last A1c discussed as above goal in prior visit (synthetic).",
+    "defaultTranscript": "Doctor: How have your sugars been at home?\nPatient: Morning readings run 140–180; I've been walking more.\nDoctor: Any hypoglycemia episodes?\nPatient: None recently.\nDoctor: We'll review labs and adjust oral agents; continue diet and activity plan (synthetic diabetes follow-up)."
+  },
+  {
+    "id": "syn-pt-003",
+    "name": "Jordan Rivera",
+    "age": 34,
+    "sex": "X",
+    "mrn": "SYN-MRN-1003",
+    "clinicalDetail": "Asthma, mild intermittent; albuterol PRN (synthetic).",
+    "defaultTranscript": "Doctor: How often are you using your rescue inhaler?\nPatient: Two to three times this week with stairs and cold air.\nDoctor: Any night symptoms or ER visits?\nPatient: No night waking; no ER (synthetic).\nDoctor: We'll step up controller discussion and confirm inhaler technique today."
+  },
+  {
+    "id": "syn-pt-004",
+    "name": "Elena Okonkwo",
+    "age": 71,
+    "sex": "F",
+    "mrn": "SYN-MRN-1004",
+    "clinicalDetail": "Chronic kidney disease stage 3 (synthetic);\n avoid nephrotoxic agents when possible.",
+    "defaultTranscript": "Doctor: Any new swelling or change in urination?\nPatient: Mild ankle swelling by evening; urine amount unchanged.\nDoctor: Current meds and OTC use?\nPatient: I take a water pill; no ibuprofen.\nDoctor: We'll monitor BP, review renal panel, and avoid nephrotoxic drugs (synthetic CKD visit)."
+  },
+  {
+    "id": "syn-pt-005",
+    "name": "Sam Patel",
+    "age": 9,
+    "sex": "M",
+    "mrn": "SYN-MRN-1005",
+    "clinicalDetail": "Parent reports seasonal allergic rhinitis; no synthetic ER visits on record.",
+    "defaultTranscript": "Parent: Sam has been sneezing every morning and rubbing his nose since pollen season started.\nDoctor: Any wheeze or fever?\nParent: No fever; no wheeze, just itchy eyes and congestion.\nDoctor: We'll discuss saline rinse and age-appropriate antihistamine options for allergic rhinitis (synthetic pediatric visit)."
+  }
+]

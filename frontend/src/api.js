@@ -5,7 +5,7 @@ async function request(path, options = {}) {
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {
-    const message = data.message || data.error || 'Request failed';
+    const message = [data.error, data.message].filter(Boolean).join(': ') || 'Request failed';
     throw new Error(message);
   }
 
@@ -14,6 +14,10 @@ async function request(path, options = {}) {
 
 export function fetchPatient() {
   return request('/patient');
+}
+
+export function fetchPatients() {
+  return request('/patients');
 }
 
 export function fetchNotes(patientId) {
