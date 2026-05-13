@@ -1,5 +1,95 @@
 [
   {
+    "id": "940e6ae0-abaf-42ca-879b-6e96ec60e541",
+    "eventType": "AI_NOTE_GENERATED",
+    "patientId": "syn-pt-001",
+    "visitId": "visit-1778665141409",
+    "userRole": "doctor",
+    "timestamp": "2026-05-13T09:39:04.622Z",
+    "description": "Generated draft SOAP note from synthetic transcript."
+  },
+  {
+    "id": "01d47faf-ede2-4ea9-98cc-b794d96e3f74",
+    "eventType": "AI_NOTE_GENERATED",
+    "patientId": "syn-pt-005",
+    "visitId": "visit-1778665116544",
+    "userRole": "doctor",
+    "timestamp": "2026-05-13T09:38:43.452Z",
+    "description": "Generated draft SOAP note from synthetic transcript."
+  },
+  {
+    "id": "5edd3e90-b5c7-473e-9299-90e81dcff43b",
+    "eventType": "AI_NOTE_GENERATED",
+    "patientId": "syn-pt-001",
+    "visitId": "visit-1778664923806",
+    "userRole": "doctor",
+    "timestamp": "2026-05-13T09:35:38.616Z",
+    "description": "Generated draft SOAP note from synthetic transcript."
+  },
+  {
+    "id": "ad7c11b7-620b-433a-bac9-0ff2e092a6b3",
+    "eventType": "AI_NOTE_GENERATED",
+    "patientId": "syn-pt-001",
+    "visitId": "visit-1778664923806",
+    "userRole": "doctor",
+    "timestamp": "2026-05-13T09:35:29.585Z",
+    "description": "Generated draft SOAP note from synthetic transcript."
+  },
+  {
+    "id": "a3bfe97b-c632-4664-ad6a-bd85dd0ad0e3",
+    "eventType": "AI_NOTE_GENERATED",
+    "patientId": "syn-pt-001",
+    "visitId": "visit-1778664775784",
+    "userRole": "doctor",
+    "timestamp": "2026-05-13T09:35:14.899Z",
+    "description": "Generated draft SOAP note from synthetic transcript."
+  },
+  {
+    "id": "e07d3886-d289-461a-a428-ffde70493ad7",
+    "eventType": "AI_NOTE_GENERATED",
+    "patientId": "syn-pt-001",
+    "visitId": "visit-1778664775784",
+    "userRole": "doctor",
+    "timestamp": "2026-05-13T09:34:56.111Z",
+    "description": "Generated draft SOAP note from synthetic transcript."
+  },
+  {
+    "id": "ab31fae1-b7cd-47bf-a76a-0fb3ead38808",
+    "eventType": "AI_NOTE_GENERATED",
+    "patientId": "syn-pt-001",
+    "visitId": "visit-1778664775784",
+    "userRole": "doctor",
+    "timestamp": "2026-05-13T09:33:30.194Z",
+    "description": "Generated draft SOAP note from synthetic transcript."
+  },
+  {
+    "id": "d093df0b-a435-46a2-93e4-8e8f4a0c1447",
+    "eventType": "AI_NOTE_GENERATED",
+    "patientId": "syn-pt-002",
+    "visitId": "visit-1778664402111",
+    "userRole": "doctor",
+    "timestamp": "2026-05-13T09:29:19.033Z",
+    "description": "Generated draft SOAP note from synthetic transcript."
+  },
+  {
+    "id": "bd209b43-8e21-414b-b48d-7f8607f04be1",
+    "eventType": "AI_NOTE_GENERATED",
+    "patientId": "syn-pt-002",
+    "visitId": "visit-1778664402111",
+    "userRole": "doctor",
+    "timestamp": "2026-05-13T09:28:23.982Z",
+    "description": "Generated draft SOAP note from synthetic transcript."
+  },
+  {
+    "id": "967c4a4e-9e42-437d-a897-d4254db3b47b",
+    "eventType": "AI_NOTE_GENERATED",
+    "patientId": "syn-pt-002",
+    "visitId": "visit-1778664402111",
+    "userRole": "doctor",
+    "timestamp": "2026-05-13T09:27:28.775Z",
+    "description": "Generated draft SOAP note from synthetic transcript."
+  },
+  {
     "id": "2132a558-68d8-418f-ba54-9aa953a44049",
     "eventType": "AI_NOTE_GENERATED",
     "patientId": "syn-pt-002",

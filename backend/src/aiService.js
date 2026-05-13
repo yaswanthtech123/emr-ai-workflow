@@ -10,10 +10,17 @@ export class AiProviderError extends Error {
   }
 }
 
-const SYSTEM_PROMPT = `You are assisting a clinician with synthetic data only.
-Return a concise SOAP note as strict JSON with keys:
+const SYSTEM_PROMPT = `You are assisting a clinician. All data is synthetic/demo only.
+Return a concise SOAP note as strict JSON with exactly these keys:
 subjective, objective, assessment, plan.
-Do not include markdown fences.`;
+Do not wrap the JSON in markdown fences.
+
+Naming and identifiers (critical):
+- Read the consultation transcript for how the patient is addressed (e.g. "Mr. John Carter", first and last name, titles). Use that same name in the **subjective** (and elsewhere when natural)—do not drop it or replace it with only "male/female" or age alone.
+- If the transcript uses a different name than any "chart context" line, trust the **transcript** for the visit narrative (the transcript is what was said in the room).
+- Opening the subjective with a brief identifier line that includes the patient's name from the transcript is encouraged when the name appears in the dialogue.
+
+Clinical style: concise, professional, past tense where appropriate for HPI.`;
 
 export async function generateSoapNote({ transcript, patientContext }) {
   if (!config.geminiApiKey) {
@@ -22,9 +29,10 @@ export async function generateSoapNote({ transcript, patientContext }) {
 
   const prompt = `${SYSTEM_PROMPT}
 
-Patient context: ${patientContext}
+Chart context (demographics and flags for this chart—use for allergies/diagnoses when relevant; for **who the patient is in this visit**, follow the transcript if names differ):
+${patientContext}
 
-Consultation transcript:
+Consultation transcript (primary source for names and visit dialogue):
 ${transcript}`;
 
   const response = await fetch(
