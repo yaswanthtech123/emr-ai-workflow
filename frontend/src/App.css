@@ -1,0 +1,74 @@
+:root {
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #f7f9fc;
+  color: #1f2937;
+}
+
+.app-shell {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px;
+  display: grid;
+  gap: 16px;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  display: grid;
+  gap: 10px;
+}
+
+textarea,
+select,
+button {
+  font: inherit;
+}
+
+textarea,
+select {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+button {
+  justify-self: start;
+  border: 0;
+  border-radius: 8px;
+  padding: 8px 14px;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+}
+
+button:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+}
+
+.warning {
+  background: #fff7ed;
+  border-left: 4px solid #f97316;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.error {
+  color: #b91c1c;
+  font-weight: 600;
+}
+
+.history-item {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 10px;
+}
